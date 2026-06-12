@@ -21,7 +21,6 @@ const App: React.FC = () => {
 
   // 【关键】组件挂载时绑定一次动画结束监听，只执行一次绑定
   useEffect(() => {
-    debugger;
     const el = ref.current;
     if (!el) return;
     
@@ -37,6 +36,9 @@ const App: React.FC = () => {
   }, [wiggle]);
 
   function onChange(props: NoUndefinedRangeValueType) {
+    if(!props){
+      return;
+    }
     let start: dayjs.Dayjs = dayjs(props[0]);
     let end: dayjs.Dayjs = dayjs(props[1]);
     if (start.isAfter(end)) {
@@ -47,7 +49,8 @@ const App: React.FC = () => {
     setStartTime(props[0]);
     setEndTime(props[1]);
   }
-  function onFocus() {
+  function reset() {
+    console.log('clear')
     setStatus('');
   }
   return (
@@ -65,7 +68,8 @@ const App: React.FC = () => {
           onChange={onChange}
           format={format}
           status={status}
-          onFocus={onFocus}
+          onClear={reset}
+          onFocusIn={reset}
         />
       </div>
     </>
