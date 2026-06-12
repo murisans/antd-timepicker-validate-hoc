@@ -21,9 +21,10 @@ const App: React.FC = () => {
 
   // 【关键】组件挂载时绑定一次动画结束监听，只执行一次绑定
   useEffect(() => {
+    debugger;
     const el = ref.current;
     if (!el) return;
-
+    
     const handleAnimationEnd = () => {
       setWiggle('');
     };
@@ -33,7 +34,7 @@ const App: React.FC = () => {
     return () => {
       el.removeEventListener('animationend', handleAnimationEnd);
     };
-  }, []);
+  }, [wiggle]);
 
   function onChange(props: NoUndefinedRangeValueType) {
     let start: dayjs.Dayjs = dayjs(props[0]);
