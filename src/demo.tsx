@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 
 import { TimePicker } from 'antd';
 import type { NoUndefinedRangeValueType } from '@rc-component/picker';
@@ -18,6 +18,22 @@ const App: React.FC = () => {
   const ref = useRef(null);
   const [status, setStatus] = useState<Status>('');
   const [wiggle, setWiggle] = useState('');
+
+  // 【关键】组件挂载时绑定一次动画结束监听，只执行一次绑定
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const handleAnimationEnd = () => {
+      setWiggle('');
+    };
+
+    el.addEventListener('animationend', handleAnimationEnd, { once: true });
+    // 组件卸载移除监听（防内存泄漏）
+    return () => {
+      el.removeEventListener('animationend', handleAnimationEnd);
+    };
+  }, []);
 
   function onChange(props: NoUndefinedRangeValueType) {
     let start: dayjs.Dayjs = dayjs(props[0]);
